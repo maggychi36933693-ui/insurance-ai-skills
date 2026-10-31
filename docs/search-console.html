@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Console 五步驟</title>
+<meta name="description" content="五個步驟，把你的網站交給 Google：驗證網站、提交網站地圖。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap">
+<style>
+/* 版面：一欄操作卡，五個步驟由上往下；要貼給 Claude 的話都包在可點的框裡 */
+:root {
+  --cream: #F6F3EC; --card: #FFFFFF; --ink: #33332E; --muted: #6F695E;
+  --pine: #4A6B57; --pine-d: #3B5646; --sage: #A8BCA1; --sand: #D9C7A7;
+  --line: #E5E0D3; --mint: #F3F6F1; --code: #2F3A33; --code-ink: #F6F3EC;
+  --serif: "Noto Serif TC", "Songti TC", serif;
+  --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 64px; }
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+.tag { align-self: flex-start; background: var(--sand); border-radius: 999px; padding: 4px 16px; font-size: 14px; font-weight: 700; letter-spacing: .05em; }
+h1 { font-family: var(--serif); font-size: clamp(30px, 6vw, 44px); line-height: 1.25; margin: 0; text-wrap: balance; }
+.nw { white-space: nowrap; }
+.lead { margin: 0; color: var(--muted); font-size: 18px; }
+.step { background: var(--card); border-radius: 20px; padding: 24px clamp(18px, 4vw, 30px); box-shadow: 0 2px 6px rgba(51,51,46,.05), 0 12px 30px rgba(51,51,46,.06);
+  display: grid; grid-template-columns: 44px 1fr; gap: 6px 16px; align-items: start; }
+.num { grid-row: span 2; width: 44px; height: 44px; border-radius: 50%; background: var(--pine); color: #fff; font-weight: 700; font-size: 19px; display: flex; align-items: center; justify-content: center; }
+.step h2 { margin: 6px 0 0; font-size: 21px; line-height: 1.4; }
+.step .body { grid-column: 2; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.step p { margin: 0; }
+.hint { color: var(--muted); font-size: 15px; }
+.key { display: inline-block; background: var(--mint); border: 1px solid var(--line); border-radius: 6px; padding: 0 8px; font-weight: 500; white-space: nowrap; }
+.main { border: 2px solid var(--pine); }
+.box { position: relative; display: block; width: 100%; text-align: left; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 14px; font: inherit; }
+.box:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; }
+.chip { position: absolute; top: 10px; right: 10px; background: var(--sand); color: var(--ink); font-size: 14px; font-weight: 700; border-radius: 999px; padding: 4px 14px; }
+.box:hover pre { background: #26302A; }
+.box.done .chip { background: #8FD1A6; }
+pre { margin: 0; padding-top: 44px !important; background: var(--code); color: var(--code-ink); border-radius: 14px; padding: 16px 18px; font-family: var(--sans); font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.copy { appearance: none; border: 0; background: var(--pine); color: #fff; font: inherit; font-size: 19px; font-weight: 700; border-radius: 14px; padding: 14px 22px; min-height: 56px; cursor: pointer; width: 100%; transition: background .15s; }
+.copy:hover { background: var(--pine-d); }
+.copy:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; }
+.copy.done { background: #2F7A4F; }
+.after { background: var(--pine); color: #fff; border-radius: 20px; padding: 22px clamp(18px, 4vw, 30px); display: flex; flex-direction: column; gap: 8px; }
+.after h2 { margin: 0; font-size: 20px; }
+.after p { margin: 0; }
+.after .say { font-family: var(--serif); font-size: 24px; color: var(--sand); }
+details { background: var(--card); border-radius: 16px; padding: 14px 20px; border: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 700; color: var(--pine); min-height: 32px; display: flex; align-items: center; }
+summary:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; border-radius: 6px; }
+details p { margin: 8px 0 4px; font-size: 16px; }
+.faq { display: flex; flex-direction: column; gap: 10px; }
+.faq h2 { margin: 6px 0 2px; font-size: 18px; color: var(--muted); }
+.note { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.note a { color: var(--pine); }
+.next { display: flex; flex-direction: column; gap: 14px; }
+.next > h2 { margin: 6px 0 0; font-family: var(--serif); font-size: 26px; line-height: 1.35; }
+.next > p { margin: 0; color: var(--muted); }
+.idea { background: var(--card); border-radius: 20px; padding: 22px clamp(18px, 4vw, 28px); box-shadow: 0 2px 6px rgba(51,51,46,.05), 0 12px 30px rgba(51,51,46,.06); display: flex; flex-direction: column; gap: 10px; }
+.idea .lbl { align-self: flex-start; background: var(--mint); color: var(--pine); border: 1px solid var(--sage); border-radius: 999px; padding: 2px 12px; font-size: 14px; font-weight: 700; }
+.idea h3 { margin: 0; font-size: 20px; line-height: 1.4; }
+.idea p { margin: 0; }
+.idea pre { background: var(--mint); color: var(--ink); border: 1px dashed var(--sage); }
+.idea .box:hover pre { background: #E8EEE5; }
+.idea .chip { background: var(--pine); color: #fff; }
+.idea .box.done .chip { background: #2F7A4F; }
+@media (prefers-reduced-motion: reduce) { .copy { transition: none; } }
+.check { background: var(--mint); border-left: 4px solid var(--pine); border-radius: 8px; padding: 8px 14px; font-size: 15px; }
+.warn { background: #FBF3E4; border-left: 4px solid #C9A25E; border-radius: 8px; padding: 8px 14px; font-size: 15px; }
+.big { font-weight: 700; color: var(--pine); }
+ol.do { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 4px; }
+.back { align-self: flex-start; color: var(--pine); font-size: 15px; }
+.lnk { color: var(--pine); font-weight: 700; word-break: break-all; }
+code { font-size: 14px; background: var(--mint); border-radius: 4px; padding: 0 4px; word-break: break-all; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="./">← 回安裝頁</a>
+  <span class="tag">Google 搜尋・學員講義</span>
+  <h1>五個步驟，<span class="nw">把網站交給 Google</span></h1>
+  <p class="lead">做完這五步，Google 就知道你的網站在哪裡、有哪些文章。框框裡的字點一下就會複製，回到 Claude 貼上送出。</p>
+
+  <section class="step" aria-labelledby="s0">
+    <span class="num" aria-hidden="true">0</span>
+    <h2 id="s0">先複製你的網站網址</h2>
+    <div class="body">
+      <p>打開你自己的網站，把網址列上整條網址複製起來，等一下會用到。</p>
+      <p class="check">✓ 網址從 <b>https://</b> 開頭，到 <b>.pages.dev/</b> 結尾</p>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s1">
+    <span class="num" aria-hidden="true">1</span>
+    <h2 id="s1">登入 Search Console</h2>
+    <div class="body">
+      <p>打開 <a class="lnk" href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>，按「立即開始」，用自己的 Google 帳號登入。</p>
+      <p class="warn">看一下右上角的大頭貼，是不是你要用的帳號。瀏覽器裡同時登入公司和私人帳號的人，最容易登錯。</p>
+      <p class="check">✓ 畫面跳出「選取資源類型」，左右兩個框</p>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s2">
+    <span class="num" aria-hidden="true">2</span>
+    <h2 id="s2">選右邊的框，貼上網址</h2>
+    <div class="body">
+      <p class="big">選右邊「網址前置字元」，不要選左邊「網域」。</p>
+      <p class="hint">左邊的「網域」要改 DNS 設定，pages.dev 的網址做不到，選了會卡住。</p>
+      <p>在右邊的框貼上剛才複製的網址，按「繼續」。</p>
+      <p class="check">✓ 畫面出現好幾種驗證方式</p>
+    </div>
+  </section>
+
+  <section class="step main" aria-labelledby="s3">
+    <span class="num" aria-hidden="true">3</span>
+    <h2 id="s3">選「HTML 標記」，交給 Claude</h2>
+    <div class="body">
+      <ol class="do">
+        <li>點開「HTML 標記」，按「複製」。複製到的是一行 <code>&lt;meta name="google-site-verification" …&gt;</code></li>
+        <li><b>先不要關掉 Search Console 這個分頁。</b></li>
+        <li>點下面的框複製這段話，回到 Claude 貼上，<b>把【　】換成剛才複製的那一行</b>，再送出：</li>
+      </ol>
+      <button class="box" type="button" data-copy aria-label="點一下複製：放驗證標記"><span class="chip">點一下複製</span><pre>這是 Google Search Console 的驗證標記，幫我放進網站首頁的 head 裡，然後發布更新：
+【貼上剛才複製的那一行】</pre></button>
+      <p class="hint">這行標記以後也不要刪掉，刪了驗證會失效。</p>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s4">
+    <span class="num" aria-hidden="true">4</span>
+    <h2 id="s4">等 2 分鐘，再按「驗證」</h2>
+    <div class="body">
+      <p class="big">Claude 說發布完成之後，等 2 分鐘再按。</p>
+      <p class="hint">網站更新要 1 到 2 分鐘。太早按，Google 還看不到標記，一定失敗。</p>
+      <p>回到 Search Console 的分頁，按「驗證」。</p>
+      <p class="check">✓ 出現「已驗證擁有權」</p>
+      <p class="warn">失敗了？等 1 分鐘再按一次，大多就會過。還是不行，複製這段給 Claude：</p>
+      <button class="box" type="button" data-copy aria-label="點一下複製：驗證失敗求救"><span class="chip">點一下複製</span><pre>Google Search Console 驗證失敗。請打開我的網站首頁，檢查驗證標記有沒有放在 head 裡、有沒有真的發布上線。有問題就修好再發布，然後告訴我什麼時候可以再按驗證。</pre></button>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s5">
+    <span class="num" aria-hidden="true">5</span>
+    <h2 id="s5">提交網站地圖</h2>
+    <div class="body">
+      <ol class="do">
+        <li>按「前往資源」，在左邊選單找「Sitemap」。</li>
+        <li>「新增 Sitemap」的框裡，網址前半段已經自動帶好了。點下面的框複製，貼在後面，按「提交」。</li>
+      </ol>
+      <button class="box" type="button" data-copy aria-label="點一下複製：網站地圖檔名"><span class="chip">點一下複製</span><pre>sitemap-index.xml</pre></button>
+      <p class="hint">提交後顯示「無法擷取」不用緊張，剛提交常常這樣，過幾天會變成「成功」。</p>
+      <p class="warn">不確定自己的網站地圖叫什麼？複製這段問 Claude：</p>
+      <button class="box" type="button" data-copy aria-label="點一下複製：問網站地圖檔名"><span class="chip">點一下複製</span><pre>我的網站地圖網址是什麼？請打開我的網站確認檔案真的存在，告訴我在 Search Console 的「新增 Sitemap」要填什麼。</pre></button>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="splus">
+    <span class="num" aria-hidden="true">＋</span>
+    <h2 id="splus">加分：請 Google 早點來</h2>
+    <div class="body">
+      <p>在 Search Console 最上面的搜尋框貼上你的首頁網址，按 Enter，再按「要求建立索引」。</p>
+      <p class="hint">寫了新文章也可以這樣做：把那篇文章的網址貼進去，按「要求建立索引」。</p>
+    </div>
+  </section>
+
+  <section class="after" aria-labelledby="a1">
+    <h2 id="a1">做完了，你已經把網站交給 Google</h2>
+    <p>Google 收錄要幾天到幾週，不是今天就搜得到。</p>
+    <p class="say">下週再搜一次自己的名字</p>
+    <p>例如「你的名字 高雄 保險」，看看網站出現了沒。</p>
+  </section>
+
+  <section class="faq" aria-labelledby="f1">
+    <h2 id="f1">卡住了？</h2>
+    <details>
+      <summary>忘記 Google 帳號密碼</summary>
+      <p>先跳過，回課堂做「標題改成客戶會搜的話」。回家找回密碼後，照這頁從第 1 步做。</p>
+    </details>
+    <details>
+      <summary>不小心選到左邊「網域」</summary>
+      <p>按左上角的資源名稱，選「新增資源」，重新選右邊「網址前置字元」就好。</p>
+    </details>
+    <details>
+      <summary>以前好像有驗證過</summary>
+      <p>左上角下拉看看有沒有你的網址。有的話直接做第 5 步。</p>
+    </details>
+    <details>
+      <summary>還是不行</summary>
+      <p>把畫面截圖貼給 Claude，問：「我卡在 Search Console 這裡，下一步怎麼辦？」或截圖貼到課程群組。</p>
+    </details>
+  </section>
+
+  <p class="note">Search Console 是 Google 官方的免費工具，只是讓 Google 知道你的網站，不會改動你的網站內容。<br>
+  <a href="./">回安裝頁</a>｜<a href="https://github.com/maggychi36933693-ui/insurance-ai-skills">技能包</a></p>
+</main>
+<script>
+(function () {
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function selectText(pre) {
+    var r = document.createRange(); r.selectNodeContents(pre);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (b) {
+    var c = b.querySelector('.chip'), p = b.querySelector('pre'), t;
+    function show(ok) {
+      clearTimeout(t);
+      b.classList.toggle('done', ok);
+      c.textContent = ok ? '已複製 ✓' : '請按 ⌘C';
+      t = setTimeout(function () { b.classList.remove('done'); c.textContent = '點一下複製'; }, 4000);
+    }
+    b.addEventListener('click', function () {
+      var text = p.textContent;
+      if (legacyCopy(text)) { show(true); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { show(true); }, function () { selectText(p); show(false); });
+      } else { selectText(p); show(false); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

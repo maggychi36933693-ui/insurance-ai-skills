@@ -33,6 +33,10 @@ https://github.com/maggychi36933693-ui/insurance-ai-skills
 | **時事、新制度** | 這則新聞可以怎麼發？請先找官方來源查證，再寫成一支短影音，告訴我的客戶這跟他們有什麼關係、現在可以做哪一件事：【貼上新聞網址或內容】 |
 | **客戶的問題** | 這週有客戶問我：【客戶的問題】幫我寫成一篇輪播，用我的語氣。客戶的資料請去識別化。 |
 
+## 讓 Google 找到你
+
+五個步驟把網站交給 Google Search Console 👉 https://maggychi36933693-ui.github.io/insurance-ai-skills/search-console.html
+
 ## 18 個技能
 
 ### 網站組（4 個）

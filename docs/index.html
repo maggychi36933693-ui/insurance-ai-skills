@@ -34,7 +34,12 @@ h1 { font-family: var(--serif); font-size: clamp(30px, 6vw, 44px); line-height: 
 .hint { color: var(--muted); font-size: 15px; }
 .key { display: inline-block; background: var(--mint); border: 1px solid var(--line); border-radius: 6px; padding: 0 8px; font-weight: 500; white-space: nowrap; }
 .main { border: 2px solid var(--pine); }
-pre { margin: 0; background: var(--code); color: var(--code-ink); border-radius: 14px; padding: 16px 18px; font-family: var(--sans); font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.box { position: relative; display: block; width: 100%; text-align: left; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 14px; font: inherit; }
+.box:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; }
+.chip { position: absolute; top: 10px; right: 10px; background: var(--sand); color: var(--ink); font-size: 14px; font-weight: 700; border-radius: 999px; padding: 4px 14px; }
+.box:hover pre { background: #26302A; }
+.box.done .chip { background: #8FD1A6; }
+pre { margin: 0; padding-top: 44px !important; background: var(--code); color: var(--code-ink); border-radius: 14px; padding: 16px 18px; font-family: var(--sans); font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
 .copy { appearance: none; border: 0; background: var(--pine); color: #fff; font: inherit; font-size: 19px; font-weight: 700; border-radius: 14px; padding: 14px 22px; min-height: 56px; cursor: pointer; width: 100%; transition: background .15s; }
 .copy:hover { background: var(--pine-d); }
 .copy:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; }
@@ -81,10 +86,10 @@ details p { margin: 8px 0 4px; font-size: 16px; }
     <h2 id="s3">按下面的按鈕，貼到對話框送出</h2>
     <div class="body">
       <button class="copy" id="copy" type="button">複製安裝指令</button>
-      <p class="hint">複製好之後，回到 Claude 的對話框，按 <span class="key">⌘ Command</span> ＋ <span class="key">V</span> 貼上，再按送出。（Windows 是 <span class="key">Ctrl</span> ＋ <span class="key">V</span>）</p>
-      <pre id="cmd">https://github.com/maggychi36933693-ui/insurance-ai-skills
+      <p class="hint">按綠色按鈕，或直接點下面深色框，都會複製。複製好之後，回到 Claude 的對話框，按 <span class="key">⌘ Command</span> ＋ <span class="key">V</span> 貼上，再按送出。（Windows 是 <span class="key">Ctrl</span> ＋ <span class="key">V</span>）</p>
+      <button class="box" id="box" type="button" aria-label="點一下複製安裝指令"><span class="chip" id="chip">點一下複製</span><pre id="cmd">https://github.com/maggychi36933693-ui/insurance-ai-skills
 
-請把這包 Skill 安裝到我目前開啟的資料夾：把 skills 裡的每個資料夾放進這個資料夾的 .claude/skills/。裝完列出裝了哪些，並確認可以使用。</pre>
+請把這包 Skill 安裝到我目前開啟的資料夾：把 skills 裡的每個資料夾放進這個資料夾的 .claude/skills/。裝完列出裝了哪些，並確認可以使用。</pre></button>
     </div>
   </section>
 
@@ -125,25 +130,43 @@ details p { margin: 8px 0 4px; font-size: 16px; }
 <script>
 (function () {
   var btn = document.getElementById('copy');
+  var box = document.getElementById('box');
+  var chip = document.getElementById('chip');
   var pre = document.getElementById('cmd');
+  var text = pre.textContent;
+  function legacyCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
   function selectText() {
     var r = document.createRange(); r.selectNodeContents(pre);
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
-  function done(ok) {
-    btn.classList.toggle('done', ok);
-    btn.textContent = ok ? '已複製 ✓ 回到 Claude 貼上' : '已選取文字，請按 ⌘C 複製';
-    setTimeout(function () { btn.classList.remove('done'); btn.textContent = '複製安裝指令'; }, 4000);
+  var timer;
+  function show(ok) {
+    clearTimeout(timer);
+    btn.classList.toggle('done', ok); box.classList.toggle('done', ok);
+    btn.textContent = ok ? '已複製 ✓ 回到 Claude 貼上' : '已反白，請按 ⌘C（Windows：Ctrl+C）';
+    chip.textContent = ok ? '已複製 ✓' : '請按 ⌘C';
+    timer = setTimeout(function () {
+      btn.classList.remove('done'); box.classList.remove('done');
+      btn.textContent = '複製安裝指令'; chip.textContent = '點一下複製';
+    }, 4000);
   }
-  btn.addEventListener('click', function () {
-    var text = pre.textContent;
+  function copy() {
+    if (legacyCopy()) { show(true); return; }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { selectText(); done(false); });
-    } else {
-      selectText();
-      try { done(document.execCommand('copy')); } catch (e) { done(false); }
-    }
-  });
+      navigator.clipboard.writeText(text).then(function () { show(true); }, function () { selectText(); show(false); });
+    } else { selectText(); show(false); }
+  }
+  btn.addEventListener('click', copy);
+  box.addEventListener('click', copy);
 })();
 </script>
 </body>

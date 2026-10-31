@@ -56,6 +56,17 @@ details p { margin: 8px 0 4px; font-size: 16px; }
 .faq h2 { margin: 6px 0 2px; font-size: 18px; color: var(--muted); }
 .note { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .note a { color: var(--pine); }
+.next { display: flex; flex-direction: column; gap: 14px; }
+.next > h2 { margin: 6px 0 0; font-family: var(--serif); font-size: 26px; line-height: 1.35; }
+.next > p { margin: 0; color: var(--muted); }
+.idea { background: var(--card); border-radius: 20px; padding: 22px clamp(18px, 4vw, 28px); box-shadow: 0 2px 6px rgba(51,51,46,.05), 0 12px 30px rgba(51,51,46,.06); display: flex; flex-direction: column; gap: 10px; }
+.idea .lbl { align-self: flex-start; background: var(--mint); color: var(--pine); border: 1px solid var(--sage); border-radius: 999px; padding: 2px 12px; font-size: 14px; font-weight: 700; }
+.idea h3 { margin: 0; font-size: 20px; line-height: 1.4; }
+.idea p { margin: 0; }
+.idea pre { background: var(--mint); color: var(--ink); border: 1px dashed var(--sage); }
+.idea .box:hover pre { background: #E8EEE5; }
+.idea .chip { background: var(--pine); color: #fff; }
+.idea .box.done .chip { background: #2F7A4F; }
 @media (prefers-reduced-motion: reduce) { .copy { transition: none; } }
 </style>
 </head>
@@ -100,6 +111,36 @@ details p { margin: 8px 0 4px; font-size: 16px; }
     <p>它會先帶你填好語氣檔，並建好「社群」資料夾。</p>
   </section>
 
+  <section class="next" aria-labelledby="n1">
+    <h2 id="n1">下一步：三種方式，生出你的第一篇貼文</h2>
+    <p>挑一個你手上已經有的，複製下面那段貼給 Claude，把【　】換成你的內容。</p>
+  <article class="idea">
+    <span class="lbl">有文章</span>
+    <h3>把網站文章變成貼文</h3>
+    <p class="hint">你 Day 1 已經寫好網站文章了，這是最快的一條路。</p>
+    <button class="box" type="button" data-copy aria-label="點一下複製：把網站文章變成貼文"><span class="chip">點一下複製</span><pre>把我網站上的這篇文章，拆成一支 30 秒短影音和一篇輪播：
+【貼上文章網址，或整篇文章】</pre></button>
+    <p class="hint">它會用 ins-repurpose 拆，交稿前自動跑合規檢查。</p>
+  </article>
+  <article class="idea">
+    <span class="lbl">有時事</span>
+    <h3>把新聞變成對客戶有用的提醒</h3>
+    <p class="hint">看到健保、長照、法規新制的新聞，或大家都在討論的事。</p>
+    <button class="box" type="button" data-copy aria-label="點一下複製：把新聞變成對客戶有用的提醒"><span class="chip">點一下複製</span><pre>這則新聞可以怎麼發？請先找官方來源查證，再寫成一支短影音，告訴我的客戶這跟他們有什麼關係、現在可以做哪一件事：
+【貼上新聞網址或內容】</pre></button>
+    <p class="hint">不站隊、不借新聞推銷，文末會附官方來源。找不到官方來源，它會先跟你說。</p>
+  </article>
+  <article class="idea">
+    <span class="lbl">有客戶問題</span>
+    <h3>把客戶的一個問題變成貼文</h3>
+    <p class="hint">這週有客戶、朋友問你的問題。一題可以同時變成網站文章和貼文。</p>
+    <button class="box" type="button" data-copy aria-label="點一下複製：把客戶的一個問題變成貼文"><span class="chip">點一下複製</span><pre>這週有客戶問我：【客戶的問題】
+幫我寫成一篇輪播，用我的語氣。客戶的資料請去識別化。</pre></button>
+    <p class="hint">想一題三用，就說「客戶問我【　】，幫我寫成文章」，寫完它會接著問要不要做成貼文。</p>
+  </article>
+    <p class="hint">三種都只寫草稿。發布前請送公司法遵或主管審核。</p>
+  </section>
+
   <section class="faq" aria-labelledby="f1">
     <h2 id="f1">卡住了？</h2>
     <details>
@@ -129,12 +170,7 @@ details p { margin: 8px 0 4px; font-size: 16px; }
 </main>
 <script>
 (function () {
-  var btn = document.getElementById('copy');
-  var box = document.getElementById('box');
-  var chip = document.getElementById('chip');
-  var pre = document.getElementById('cmd');
-  var text = pre.textContent;
-  function legacyCopy() {
+  function legacyCopy(text) {
     var ta = document.createElement('textarea');
     ta.value = text; ta.setAttribute('readonly', '');
     ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
@@ -144,12 +180,25 @@ details p { margin: 8px 0 4px; font-size: 16px; }
     document.body.removeChild(ta);
     return ok;
   }
-  function selectText() {
+  function selectText(pre) {
     var r = document.createRange(); r.selectNodeContents(pre);
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
+  function copy(pre, show) {
+    var text = pre.textContent;
+    if (legacyCopy(text)) { show(true); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { show(true); }, function () { selectText(pre); show(false); });
+    } else { selectText(pre); show(false); }
+  }
+
+  // 安裝指令：綠色按鈕和深色框
+  var btn = document.getElementById('copy');
+  var box = document.getElementById('box');
+  var chip = document.getElementById('chip');
+  var cmd = document.getElementById('cmd');
   var timer;
-  function show(ok) {
+  function showMain(ok) {
     clearTimeout(timer);
     btn.classList.toggle('done', ok); box.classList.toggle('done', ok);
     btn.textContent = ok ? '已複製 ✓ 回到 Claude 貼上' : '已反白，請按 ⌘C（Windows：Ctrl+C）';
@@ -159,14 +208,21 @@ details p { margin: 8px 0 4px; font-size: 16px; }
       btn.textContent = '複製安裝指令'; chip.textContent = '點一下複製';
     }, 4000);
   }
-  function copy() {
-    if (legacyCopy()) { show(true); return; }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { show(true); }, function () { selectText(); show(false); });
-    } else { selectText(); show(false); }
-  }
-  btn.addEventListener('click', copy);
-  box.addEventListener('click', copy);
+  btn.addEventListener('click', function () { copy(cmd, showMain); });
+  box.addEventListener('click', function () { copy(cmd, showMain); });
+
+  // 三種下一步：各自的框
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (b) {
+    var c = b.querySelector('.chip'), p = b.querySelector('pre'), t;
+    b.addEventListener('click', function () {
+      copy(p, function (ok) {
+        clearTimeout(t);
+        b.classList.toggle('done', ok);
+        c.textContent = ok ? '已複製 ✓' : '請按 ⌘C';
+        t = setTimeout(function () { b.classList.remove('done'); c.textContent = '點一下複製'; }, 4000);
+      });
+    });
+  });
 })();
 </script>
 </body>

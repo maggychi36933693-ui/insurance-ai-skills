@@ -5,7 +5,11 @@
 
 **這些技能只寫草稿。不會幫你發文、不會登入你的任何帳號。**
 
-## 安裝：複製下面這段，貼給 Claude Code
+## 安裝
+
+**最簡單：打開安裝頁，按一下按鈕複製** 👉 https://maggychi36933693-ui.github.io/insurance-ai-skills/
+
+或自己複製下面這段，貼給 Claude Code：
 
 先在 Claude Code 開啟你的網站資料夾，再把這段整個複製貼上：
 

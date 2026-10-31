@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>安裝 AI 技能包｜保險業務員</title>
+<meta name="description" content="三個步驟，把 18 個保險業務員專用的 Claude Code 技能裝進你的網站資料夾。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap">
+<style>
+/* 版面：一欄，像一張操作卡；三個步驟由上往下，第三步是主角（複製按鈕） */
+:root {
+  --cream: #F6F3EC; --card: #FFFFFF; --ink: #33332E; --muted: #6F695E;
+  --pine: #4A6B57; --pine-d: #3B5646; --sage: #A8BCA1; --sand: #D9C7A7;
+  --line: #E5E0D3; --mint: #F3F6F1; --code: #2F3A33; --code-ink: #F6F3EC;
+  --serif: "Noto Serif TC", "Songti TC", serif;
+  --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 64px; }
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+.tag { align-self: flex-start; background: var(--sand); border-radius: 999px; padding: 4px 16px; font-size: 14px; font-weight: 700; letter-spacing: .05em; }
+h1 { font-family: var(--serif); font-size: clamp(30px, 6vw, 44px); line-height: 1.25; margin: 0; text-wrap: balance; }
+.nw { white-space: nowrap; }
+.lead { margin: 0; color: var(--muted); font-size: 18px; }
+.step { background: var(--card); border-radius: 20px; padding: 24px clamp(18px, 4vw, 30px); box-shadow: 0 2px 6px rgba(51,51,46,.05), 0 12px 30px rgba(51,51,46,.06);
+  display: grid; grid-template-columns: 44px 1fr; gap: 6px 16px; align-items: start; }
+.num { grid-row: span 2; width: 44px; height: 44px; border-radius: 50%; background: var(--pine); color: #fff; font-weight: 700; font-size: 19px; display: flex; align-items: center; justify-content: center; }
+.step h2 { margin: 6px 0 0; font-size: 21px; line-height: 1.4; }
+.step .body { grid-column: 2; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.step p { margin: 0; }
+.hint { color: var(--muted); font-size: 15px; }
+.key { display: inline-block; background: var(--mint); border: 1px solid var(--line); border-radius: 6px; padding: 0 8px; font-weight: 500; white-space: nowrap; }
+.main { border: 2px solid var(--pine); }
+pre { margin: 0; background: var(--code); color: var(--code-ink); border-radius: 14px; padding: 16px 18px; font-family: var(--sans); font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.copy { appearance: none; border: 0; background: var(--pine); color: #fff; font: inherit; font-size: 19px; font-weight: 700; border-radius: 14px; padding: 14px 22px; min-height: 56px; cursor: pointer; width: 100%; transition: background .15s; }
+.copy:hover { background: var(--pine-d); }
+.copy:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; }
+.copy.done { background: #2F7A4F; }
+.after { background: var(--pine); color: #fff; border-radius: 20px; padding: 22px clamp(18px, 4vw, 30px); display: flex; flex-direction: column; gap: 8px; }
+.after h2 { margin: 0; font-size: 20px; }
+.after p { margin: 0; }
+.after .say { font-family: var(--serif); font-size: 24px; color: var(--sand); }
+details { background: var(--card); border-radius: 16px; padding: 14px 20px; border: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 700; color: var(--pine); min-height: 32px; display: flex; align-items: center; }
+summary:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; border-radius: 6px; }
+details p { margin: 8px 0 4px; font-size: 16px; }
+.faq { display: flex; flex-direction: column; gap: 10px; }
+.faq h2 { margin: 6px 0 2px; font-size: 18px; color: var(--muted); }
+.note { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.note a { color: var(--pine); }
+@media (prefers-reduced-motion: reduce) { .copy { transition: none; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <span class="tag">AI 技能包・安裝頁</span>
+  <h1>三個步驟，<span class="nw">裝好 18 個 AI 技能</span></h1>
+  <p class="lead">給保險業務員用的 Claude Code 技能：品牌、網站、Google 搜尋、IG 社群。全部繁體中文，合規檢查內建。</p>
+
+  <section class="step" aria-labelledby="s1">
+    <span class="num" aria-hidden="true">1</span>
+    <h2 id="s1">打開 Claude 桌面版，切到「Code」分頁</h2>
+    <div class="body">
+      <p class="hint">在電腦上做，手機不行。</p>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s2">
+    <span class="num" aria-hidden="true">2</span>
+    <h2 id="s2">選你的網站資料夾</h2>
+    <div class="body">
+      <p class="hint">通常在桌面，叫「我的網站-你的名字」。技能會裝在這個資料夾裡。</p>
+    </div>
+  </section>
+
+  <section class="step main" aria-labelledby="s3">
+    <span class="num" aria-hidden="true">3</span>
+    <h2 id="s3">按下面的按鈕，貼到對話框送出</h2>
+    <div class="body">
+      <button class="copy" id="copy" type="button">複製安裝指令</button>
+      <p class="hint">複製好之後，回到 Claude 的對話框，按 <span class="key">⌘ Command</span> ＋ <span class="key">V</span> 貼上，再按送出。（Windows 是 <span class="key">Ctrl</span> ＋ <span class="key">V</span>）</p>
+      <pre id="cmd">https://github.com/maggychi36933693-ui/insurance-ai-skills
+
+請把這包 Skill 安裝到我目前開啟的資料夾：把 skills 裡的每個資料夾放進這個資料夾的 .claude/skills/。裝完列出裝了哪些，並確認可以使用。</pre>
+    </div>
+  </section>
+
+  <section class="after" aria-labelledby="a1">
+    <h2 id="a1">看到它列出 18 個技能，就裝好了</h2>
+    <p>開一個新對話，說這句開始：</p>
+    <p class="say">「開始用社群技能」</p>
+    <p>它會先帶你填好語氣檔，並建好「社群」資料夾。</p>
+  </section>
+
+  <section class="faq" aria-labelledby="f1">
+    <h2 id="f1">卡住了？</h2>
+    <details>
+      <summary>跳出視窗問「要不要允許執行」</summary>
+      <p>按「允許」。它要從 GitHub 下載技能包，這是正常的。</p>
+    </details>
+    <details>
+      <summary>裝好了，但說「開始用社群技能」沒反應</summary>
+      <p>開一個新對話再試一次，或關掉資料夾重新開啟。新裝的技能有時要重新開始才會出現。</p>
+    </details>
+    <details>
+      <summary>在資料夾裡找不到 .claude</summary>
+      <p>它是隱藏資料夾。Mac 的 Finder 按 <span class="key">⌘ Command</span> ＋ <span class="key">Shift</span> ＋ <span class="key">.</span> 就看得到。不用去找也沒關係，Claude 看得到就好。</p>
+    </details>
+    <details>
+      <summary>按鈕按了沒反應</summary>
+      <p>直接選取上面深色框裡的整段文字，複製貼上也一樣。</p>
+    </details>
+    <details>
+      <summary>還是不行</summary>
+      <p>把畫面截圖貼給 Claude，問：「我卡在這裡，下一步怎麼辦？」或截圖貼到課程群組。</p>
+    </details>
+  </section>
+
+  <p class="note">這些技能只寫草稿，不會幫你發文，也不會登入你的任何帳號。社群貼文和網站文章都算對外文宣，發布前請送公司法遵或主管審核。<br>
+  技能包內容：<a href="https://github.com/maggychi36933693-ui/insurance-ai-skills">github.com/maggychi36933693-ui/insurance-ai-skills</a>（MIT 授權）</p>
+</main>
+<script>
+(function () {
+  var btn = document.getElementById('copy');
+  var pre = document.getElementById('cmd');
+  function selectText() {
+    var r = document.createRange(); r.selectNodeContents(pre);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  function done(ok) {
+    btn.classList.toggle('done', ok);
+    btn.textContent = ok ? '已複製 ✓ 回到 Claude 貼上' : '已選取文字，請按 ⌘C 複製';
+    setTimeout(function () { btn.classList.remove('done'); btn.textContent = '複製安裝指令'; }, 4000);
+  }
+  btn.addEventListener('click', function () {
+    var text = pre.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { selectText(); done(false); });
+    } else {
+      selectText();
+      try { done(document.execCommand('copy')); } catch (e) { done(false); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
